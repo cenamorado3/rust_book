@@ -27,3 +27,5 @@
 
 //cargo build --release
 //like cargo build, creates a folder in target, named release
+
+fn main(){}
