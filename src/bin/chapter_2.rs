@@ -47,12 +47,11 @@ fn main() {
 
     let mut attempts:i32 = 3;
     //GET RID OF THE PARENTHESES
-      while attempts > 0
-      {
+      while attempts > 0 {
         let mut g = String::new();
         io::stdin()
-      .read_line(&mut g)// */& similiar to C reference 
-      .expect("Failed to read");//seems like an assertion, will lazy load since it isnt immediately conducive to learning
+        .read_line(&mut g)// */& similiar to C reference 
+        .expect("Failed to read");//seems like an assertion, will lazy load since it isnt immediately conducive to learning
 
         let int_guess: i32 = match g.trim().parse::<i32>(){
           Ok(num) => num,

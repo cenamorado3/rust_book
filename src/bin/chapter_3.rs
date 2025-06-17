@@ -1,20 +1,18 @@
 /*
 variables and mutability
 let 
-an immutable variable ie can  be modified
+an immutable variable ie can not be modified, a readonly variable
 
 vs
 
 let mut
+a mutable var
 
-a read only variable
-
-
-const are mutable
+const are always immutable
 
 ---
 
-rust allows re-declaring a variable, this is called shadowing, essetially an override
+rust allows re-declaring a variable, this is called shadowing, essentially an override
 
 ---
 

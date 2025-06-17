@@ -49,14 +49,14 @@ stack only copy
     println!("x = {x}, y = {y}");
 
 
-unlike strings this works due to the rust ecosystem due to the implementation of the "copy trait" on scalar types
+unlike strings this works due to the rust ecosystem and the implementation of the "copy trait" on scalar types
 
 ---
 
 ownership and functions
 
-with the previous notes and deep clones and copy traits, it's interesting to see how ownership rules are different from other languages and the importance
-of returning a value
+with the previous notes, deep clones and copy traits, it's interesting to see how ownership rules 
+are different from other languages and the importance of returning a value
 
 
     let x: String = String::from("x");
@@ -79,7 +79,8 @@ of returning a value
 
 referece and "borrowing"
 
-rather than taking ownership and returning a valuable, which is a terrible idea, a reference can be used instead
+rather than taking ownership and returning a valuable everytime, which is a terrible idea, 
+a reference can be used instead
     fn take_ownership(s: String){ //consider -> String
         println!("{s}");
     }
@@ -90,9 +91,10 @@ rather than taking ownership and returning a valuable, which is a terrible idea,
         //to quote the book
         //A reference is like a pointer in that it’s an address we can follow to access the data stored at that address; 
         //that data is owned by some other variable. 
-        //Unlike a pointer, a reference is guaranteed to point to a valid value of a particular type for the life of that reference.
+        //Unlike a pointer, a reference is guaranteed to point to a valid value of a particular type 
+        for the life of that reference.
 
-        //this helps clear the air as someone more interested in C than any other language memory management
+        //this helps clear the air as someone more interested in C than any other language with memory management
         //especially when & still means "reference" or "address of"
         //and * is still a dereferance of a pointer
     }
@@ -105,7 +107,8 @@ rather than taking ownership and returning a valuable, which is a terrible idea,
 ---
 
 a critical thing to note is references are immutable by default, therefore, the value can not be changed,
-since we have borrowed it and thus have not taken ownership. this can easily be fixed with a mutable reference, mut &borrow
+since we have borrowed it and thus have not taken ownership. this can easily be fixed with a
+ mutable reference -> mut &borrow
 
     fn borrow(s: mut &String){//rather than taking ownership use a reference instead, which is called borrowing in rust
         println!("{s}");
@@ -114,7 +117,7 @@ the one caveat is that mutable references MUST NOT have any other references to 
 
 ---
 
-like other memoery unsafe languages, "dangling" can still happen, where in C this is usually a dangling pointer when not freed
+like other memory unsafe languages, "dangling" can still happen, where in C this is usually a dangling pointer when not freed
 in rust it is a dangling reference 
 
     fn dangle() -> &String {
@@ -126,7 +129,7 @@ in rust it is a dangling reference
     fn no_dangle() -> String {
         let s = String::from("hello");
 
-        s
+        s//implicit return
     }
 
 ---
