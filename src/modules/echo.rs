@@ -6,3 +6,6 @@ impl Echo{
         println!("{}", self.message);
     }
 }
+
+#[derive(Debug)]
+pub struct Test{}
