@@ -1,12 +1,15 @@
-use crate::modules::chapter_9::dream_theather;
+use crate::modules::chapter_10::traits::*;
 pub mod modules;
 
 fn main() {
-    let r = dream_theather::systematic_chaos("404.txt");
-    //the error has propogated/"bubbled" we have to deal with it eventually
-    match r {
-        Ok(txt) => println!("{}", txt),
-        Err(e) => panic!("{}", e.to_string())
+    let x = SomeStruct{
+        x: 3.0,
+        y: 2.4
     };
-    //there are some tricks outlined in the book, could vs should.
+    println!("{}", x.some_method().to_string());
+    println!("{}", x.to_string());
+
+    let x = UndefinedBehavior{};
+    println!("{}", x.some_method());
+    println!("{}", x.to_string());
 }
