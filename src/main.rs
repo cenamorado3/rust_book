@@ -1,21 +1,33 @@
-use crate::modules::chapter_10::traits::*;
+use crate::modules::chapter_16::concurrency::*;
 pub mod modules;
 
 fn main() {
-    let x = SomeStruct{
-        x: 3.0,
-        y: 2.4
+    let x = ConcurrentVector{
+        list: vec![1,2,3]
     };
-    println!("{}", x.some_method().to_string());
-    println!("{}", x.to_string());
-
-    let x = UndefinedBehavior{};
-    //println!("{}", x.some_method());
-    println!("{}", x.to_string());
 
 
-    let x = LifetimeExample{};
-    println!("{}", x.longest_with_an_announcement("asdf", "longer than asdf", "blah"));//everything on this line gets dropped...except x
-    dbg!(x);//now everything is dropped, x was consumed
-    //x.longest_with_an_announcement("asdf", "longer than asdf", "blah");//try this
+
+    //AAAAAHHHHHHHH
+    x.process(&mut x.list.iter(), | e|{
+        e 
+    });
+
+
+    let x = ConcurrentVector{
+        list: vec!["a", "b", "c"]
+    };
+
+    x.process(&mut x.list.iter(), |e|{
+       println!("{} {}", e, String::from("cat"));
+       //format!("{}{}", e, "cat").as_str()
+       e
+
+       //leaving this for now, im not sure if this is the right path, its all i got, thanks compiler
+       //https://doc.rust-lang.org/nomicon/hrtb.html
+
+       //if i return some operation compiler complains about &E vs E or &&E
+       //it seems to either want a hrtb or something small and silly for me to correctly resolve the types
+       //clearly i dont have a solid grasp on this quite yet, wasnt exepcting to
+    });
 }
