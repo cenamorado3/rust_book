@@ -67,4 +67,66 @@ use std::fmt::{Display, Formatter, Error};
         }
     }
 
+
+
+/*
+Lifetyime syntax
+&i32        // a reference
+&'a i32     // a reference with an explicit lifetime
+&'a mut i32 // a mutable reference with an explicit lifetime
+
+
+---
+ fn fmt(&self, f: &mut Formatter<'_>)-> Result<(), Error>{
+
+ so that thing i did not understand has a mutable reference set with a lifetime explictly set which is never used?
+
+---
+
+ 'static is a lifetime that last the length of the program
+
+---
+
+Lifetime Elision
+rust history -> newer versions, including rustc 1.87.0 (17067e9ac 2025-05-09) can infer these lifetimes so it doesnt have to be dealt with
+as frequently
+
+
+---
+
+i understand the theory of traits, hehe, (ToTs), thanks to my use of generics in C# and to some degree the lifetimes since they are generics
+
+*/#[derive(Debug)]
+    pub struct LifetimeExample{
+    }
+    //lots going on here
+    impl LifetimeExample{
+        pub fn longest_with_an_announcement<'a, T>(
+            &self,
+            //below argument x references/borrows lifetime 'a from function
+            x: &'a str, //str not String, get lots of errors if you just change it to String, str is shorthand for &str?
+            //y shares lifetime a, so lifetime of function?
+            y: &'a str,
+            ann: T,//the third arg
+        ) -> &'a str //returns a str that also last the lifetime of 'a, ie the length of the function
+        where
+            T: Display,//other ways to do this for sure, this is the only reason line 115 works, otherwise ("{}", ann) syntax
+        {
+            println!("Announcement! {ann}");
+            if x.len() > y.len() { x } else { y }//returns str x or y, whicher is longest
+        }
+
+        /*
+        still don't fully grasp the concept of lifetimes, my understanding is to enforce a desired ownership model/ensure a borrowed variable
+        lives some duration, i think the bold statement here is, its a parallel to design patterns but on memory rather than objects
+
+        by declaring a lifetime you can effectively prevent compilation and given the low level nature of rust, i can see why that could
+        be useful/desired, particularly with traits and by virtue anything that implements that trait
+
+        ive defintely used generics to enforce type safety and i can see a lifetime enforcing memory safety.
+
+        complicated yes, worth it, depends, regardless i think its probably a good sign of a well thought out system or a good
+        rustaceans
+        */
+    }
 }
