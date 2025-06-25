@@ -2,32 +2,30 @@ use crate::modules::chapter_16::concurrency::*;
 pub mod modules;
 
 fn main() {
-    let x = ConcurrentVector{
+
+    println!("=============");
+    println!("==== int ====");
+    println!("=============");
+
+    let x = ConcurrentVector::<i32>{//adding explit types helped?
         list: vec![1,2,3]
     };
 
 
 
-    //AAAAAHHHHHHHH
-    x.process(&mut x.list.iter(), | e|{
-        e 
+    x.process(&mut x.list.iter().copied(), |&mut e|{//copied
+        e + 1//delegated operation
     });
 
-
-    let x = ConcurrentVector{
-        list: vec!["a", "b", "c"]
+    println!("=============");
+    println!("== string ==");
+    println!("=============");
+    let x = ConcurrentVector::<String>{//adding explit types helped?
+        //build vec! with String not str/&str (still a bit confused on the diff)
+        list: vec!["a".to_string(), "b".to_string(), "c".to_string()]
     };
 
-    x.process(&mut x.list.iter(), |e|{
-       println!("{} {}", e, String::from("cat"));
-       //format!("{}{}", e, "cat").as_str()
-       e
-
-       //leaving this for now, im not sure if this is the right path, its all i got, thanks compiler
-       //https://doc.rust-lang.org/nomicon/hrtb.html
-
-       //if i return some operation compiler complains about &E vs E or &&E
-       //it seems to either want a hrtb or something small and silly for me to correctly resolve the types
-       //clearly i dont have a solid grasp on this quite yet, wasnt exepcting to
+    x.process(&mut x.list.iter().cloned(), | e|{//cloned
+       format!("{} {}", e, "cat")
     });
 }
