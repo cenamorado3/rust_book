@@ -10,8 +10,6 @@ pub mod concurrency{
         where 
         C : Iterator<Item = T>,
         T: Display + Send + 'static;
-
-        fn g(&self);
     }
 
     // enum ConcurrentCollection{
@@ -41,7 +39,8 @@ pub mod concurrency{
 
             updates
         }
-
-        fn g(&self){println!("asdf");}
     }
 }
+
+//decided i learned what i wanted so i wont spend more time on this
+//          "Right or wrong, I know I just need closure"
