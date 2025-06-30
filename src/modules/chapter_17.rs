@@ -23,7 +23,7 @@ pub mod asyncs{
 
     //trying to rebuild a barebones http client with std packages only
 
-    use std::{collections::HashMap, io::{Read, Write}, net::TcpStream};
+    use std::{collections::HashMap, future::{self}, io::{Read, Write}, net::TcpStream, task::Poll};
 
 
     //just one crate...
@@ -53,27 +53,67 @@ pub mod asyncs{
             }
 
         }
-        //
-        pub fn get(&mut self, headers: HttpHeader) -> String{
+        pub fn async_get(&mut self, headers: HttpHeader<'_>) -> String{
+            /*
+            C# with Task Parralell Libray
+            public Task<String> Get(...)
+            {
+                //Task effectively spawns a thread whose inner work is implemented as a delegate
+                //()=> {...} goes by many names, lambda expression, anonymous functions, arrow functions
+                //or even specific Types such as Action, Funcs, maybe even EventCallBack(s)
+                //s in essence they syntactic sugar, for delgate(Identifier(*args)) where identifier is a method
+                //defined elsewhere
+                return Task.Run(() => {
+                    ...
+                });
+            }
+
+            usage:
+            public async method(...)
+            {
+                await Get();
+            }
+             */
+            //java like future?
+                    println!("request made with headers:\n{}", headers.as_str());
+            let _ = async{
+
+                let t = future::poll_fn(move |_| -> Poll<String>{
+                    let _ = &mut self.client.write_all(headers.as_str().as_bytes());
+                    println!("request made with headers:\n{}", headers.as_str());
+                    let mut encoded_response = Vec::new();
+                    let _size = &mut self.client.read_to_end(&mut encoded_response)
+                    .expect("to read");
+
+                    let response =  String::from_utf8_lossy(&encoded_response);
+                    let mut data = response.split("\r\n\r\n").enumerate();
+
+                    let _response_headers: &str = data.next().unwrap().1; 
+                    let body = data.next().unwrap().1; 
+                
+                    Poll::Ready(body.to_owned())
+                }).await;
+                        println!("{t}");
+            };
+            "asdf".to_owned()
+        }
+
+        
+        pub fn get(&mut self, headers: HttpHeader<'_>) -> String{
             let _ = &mut self.client.write_all(headers.as_str().as_bytes());
             println!("request made with headers:\n{}", headers.as_str());
-            
             let mut encoded_response = Vec::new();
             let _size = &mut self.client.read_to_end(&mut encoded_response)
             .expect("to read");
-        
 
-            //LOOK A COW - Clone on Write
             let response =  String::from_utf8_lossy(&encoded_response);
-            //println!("response:\n{}", response);
-
-            //parse response....
             let mut data = response.split("\r\n\r\n").enumerate();
+
             let _response_headers: &str = data.next().unwrap().1; 
             let body = data.next().unwrap().1; 
-            //
-
-            body.to_string()
+            
+            
+            body.to_owned()
         }
     }
     
